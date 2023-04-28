@@ -11,12 +11,17 @@ jobs:
     steps:
       - name: Say Hello
         run: echo "Hello World!"
-  printDate:
+  printDate_job:
     runs-on: ubuntu-20.04
     steps: 
       - name: print Date
         run: |
           now=$(date)
           echo $now
+  printDir_job:
+      runs-on: ubuntu-20.04
+      steps:
+        - name: print directory
+          run: echo ls
 
           
