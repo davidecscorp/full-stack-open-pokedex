@@ -15,6 +15,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps: 
       - name: print Date
-        run: echo new Date()
+        run: echo date
 
           
