@@ -15,6 +15,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps: 
       - name: print Date
-        run: echo date
+        run: $date=$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
           
