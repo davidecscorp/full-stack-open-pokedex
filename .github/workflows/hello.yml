@@ -11,4 +11,10 @@ jobs:
     steps:
       - name: Say Hello
         run: echo "Hello World!"
+  printDate:
+    runs-on: ubuntu-20.04
+    steps: 
+      - name: print Date
+        run: echo new Date()
+
           
