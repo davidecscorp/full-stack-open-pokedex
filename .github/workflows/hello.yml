@@ -22,6 +22,6 @@ jobs:
       runs-on: ubuntu-20.04
       steps:
         - name: print directory
-          run: echo ls
+          run: ls
 
           
