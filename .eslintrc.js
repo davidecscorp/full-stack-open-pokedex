@@ -1,6 +1,6 @@
 module.exports = {
   "env": {
-    // "browser": true,
+    "browser": true,
     "node": true,
     "es6": true,
     "jest/globals": true
@@ -46,5 +46,10 @@ module.exports = {
     ],
     // "no-console": "error",
     "react/prop-types": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
