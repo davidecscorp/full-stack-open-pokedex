@@ -22,6 +22,4 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{toJson(github.event.commits.*.message)}}
           CHECK: ${{contains(github.event.head_commit.message, '#skip')}}
-        # run: echo "$COMMIT_MESSAGES"
-          if: 'CHECK == true'
           run: echo "$CHECK"  
