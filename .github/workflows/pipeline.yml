@@ -55,7 +55,7 @@ jobs:
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/master' && env.COMMIT_MESSAGES == 'true'
         uses: anothrNick/github-tag-action@1.64.0
-        with:
+        env:
           GITHUB_TOKEN: ${{secrets.GIT_SECRET}}
           WITH_V: true
           DEFAULT_BUMP: patch
