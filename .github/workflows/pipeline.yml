@@ -56,7 +56,7 @@ jobs:
         if: github.ref == 'refs/heads/master' && env.COMMIT_MESSAGES == 'true'
         uses: anothrNick/github-tag-action@1.64.0
         with:
-          github_token: ${{ secrets.GIT_SECRET }}
-          with_v: true
-          default_bump: patch
-          release_branches: master
+          GITHUB_TOKEN: ${{secrets.GIT_SECRET}}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: master
