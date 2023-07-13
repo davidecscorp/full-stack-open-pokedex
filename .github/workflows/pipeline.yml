@@ -4,55 +4,59 @@ on:
   push:
     branches:
       - master
-  pull_request: 
-    branches: [master]
-    types: [opened, synchronize]
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - synchronize
 
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
           node-version: '16'
       - name: Install dependencies
         run: npm install
       - name: Check style
         run: npm run eslint
-      - name: run test
+      - name: Run tests
         run: npm run test
-      - name: e2e tests
-        uses: cypress-io/github-action@v5
-        with: 
+      - name: E2E tests
+        if: github.event_name == 'push'
+        uses: cypress-io/github-action@v2
+        with:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-        if: ${{ github.event_name == 'push' }}
       - name: Trigger deployment
-        run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICE_ID}}?key=${{secrets.RENDER_API_KEY}}
-  
+        run: curl "https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}"
+
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: simple_deployment_pipeline
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      with:
-          node-version: '16' 
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Commit messages
-        env: 
+        env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
         if: contains(github.event.head_commit.message, '#skip')
       - name: Bump version and push tag
-        
         if: github.ref == 'refs/heads/master' && env.COMMIT_MESSAGES != 'true'
-        uses: anothrNick/github-tag-action@1.64.0
-        env: 
-          GITHUB_TOKEN: ${{secrets.GIT_SECRET}}
-          WITH_V: true
-          DEFAULT_BUMP: patch
-          RELEASE_BRANCHES: master
-
-# if: ${{ env.commit_messages == 'true' }}
+        uses: anothrNick/github-tag-action@v1.64.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          with_v: true
+          default_bump: patch
+          release_branches: master
