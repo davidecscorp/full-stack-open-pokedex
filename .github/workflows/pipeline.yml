@@ -54,7 +54,7 @@ jobs:
         if: contains(github.event.head_commit.message, '#skip')
       - name: Bump version and push tag
         if: github.ref == 'refs/heads/master' && env.COMMIT_MESSAGES != 'true'
-        uses: anothrNick/github-tag-action@v1.67.0
+        uses: anothrNick/github-tag-action@1.64.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           with_v: true
