@@ -38,19 +38,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - name: commit messages
+      with:
+          node-version: '16' 
+      - name: Commit messages
         env: 
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        if: contains(github.event.head_commit.message, '#skip')
         run: echo "$COMMIT_MESSAGES"
-        with:
-          node-version: '16'  
+        if: contains(github.event.head_commit.message, '#skip')
       - name: Bump version and push tag
-        if: ${{ env.commit_messages == 'true' }}
-        if: github.ref == 'refs/heads/master'
+        
+        if: github.ref == 'refs/heads/master' && env.COMMIT_MESSAGES != 'true'
         uses: anothrNick/github-tag-action@1.64.0
         env: 
           GITHUB_TOKEN: ${{secrets.GIT_SECRET}}
           WITH_V: true
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: master
+
+# if: ${{ env.commit_messages == 'true' }}
